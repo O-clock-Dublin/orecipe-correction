@@ -27,5 +27,18 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"
-  }
+  },
+  "description": "- Créé un state pour stocker le token d'authentification, un pour stocker le pseudo et un autre pour les éventuels messages d'erreur.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/O-clock-Dublin/orecipe-correction.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/O-clock-Dublin/orecipe-correction/issues"
+  },
+  "homepage": "https://github.com/O-clock-Dublin/orecipe-correction#readme"
 }

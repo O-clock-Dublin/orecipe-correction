@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react"
-import { useParams } from "react-router"
-import type { Recipe } from "../../interface/Recipe"
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import type { Recipe } from "../../interface/Recipe";
 
 export default function RecipePage() {
-  const { slug } = useParams()
-  const apiUrl = "https://orecipes-api-msfv.onrender.com/api"
+  const { slug } = useParams();
+  const apiUrl = "https://orecipes-api-msfv.onrender.com/api";
 
-  const [recipe, setRecipe] = useState<Recipe | undefined>()
+  const [recipe, setRecipe] = useState<Recipe | undefined>();
 
   useEffect(() => {
-    ;(async () => {
-      const response = await fetch(`${apiUrl}/recipes/${slug}`)
-      const fetchedRecipe: Recipe = await response.json()
-      setRecipe(fetchedRecipe)
-    })()
-  }, [slug, apiUrl])
+    (async () => {
+      const response = await fetch(`${apiUrl}/recipes/${slug}`);
+      const fetchedRecipe: Recipe = await response.json();
+      setRecipe(fetchedRecipe);
+    })();
+  }, [slug, apiUrl]);
 
   return (
     <article>
@@ -65,8 +65,8 @@ export default function RecipePage() {
           </section>
         </>
       ) : (
-        <h1>recette introuvablke ou supprimée</h1>
+        <h1>recette introuvable ou supprimée</h1>
       )}
     </article>
-  )
+  );
 }
