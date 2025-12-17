@@ -18,7 +18,7 @@ export default function Navbar({ recipes }: { recipes: Recipe[] }) {
           <li key={recipe.id}>
             <NavLink
               className={({ isActive }) => (isActive ? styles.active : "link")}
-              to={`/${recipe.slug}`}
+              to={`recipes/${recipe.slug}`}
             >
               {recipe.title}
             </NavLink>

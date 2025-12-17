@@ -5,6 +5,7 @@ import Navbar from "./component/navbar/Navbar"
 import Home from "./page/home/Home"
 import { useEffect, useState } from "react"
 import type { Recipe } from "./interface/Recipe"
+import RecipePage from "./page/recipe/RecipePage"
 
 function App() {
   const apiUrl = "https://orecipes-api-msfv.onrender.com/api"
@@ -31,6 +32,7 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home recipes={recipes} />} />
+            <Route path="/recipes/:slug" element={<RecipePage />} />
           </Routes>
         </div>
       </div>

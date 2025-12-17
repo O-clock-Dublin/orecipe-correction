@@ -4,7 +4,7 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <a href="/">
-        <img src="vite.svg" alt="o'clock recipes" />
+        <img src="/vite.svg" alt="o'clock recipes" />
       </a>
       <form className={styles.form}>
         <input

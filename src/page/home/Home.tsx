@@ -14,7 +14,7 @@ export default function Home({ recipes }: { recipes: Recipe[] }) {
               <img src={recipe.thumbnail} alt={recipe.title} />
               <h3>{recipe.title}</h3>
               <p>Difficulté : {recipe.difficulty}</p>
-              <Link to={recipe.slug}>Voir la recette</Link>
+              <Link to={`recipes/${recipe.slug}`}>Voir la recette</Link>
             </li>
           ))
         ) : (
