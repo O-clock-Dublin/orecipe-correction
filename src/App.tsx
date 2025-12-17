@@ -23,7 +23,7 @@ function App() {
   }
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       await fetchRecipes()
     })()
   }, [])
@@ -45,9 +45,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home recipes={recipes} />} />
               <Route path="/recipes/:slug" element={<RecipePage />} />
-              {token && (
-                <Route path="/favorites" element={<FavoritesPage />} />
-              )}
+              <Route path="/favorites" element={<FavoritesPage apiUrl={apiUrl} />} />
             </Routes>
           </div>
         </div>
