@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router"
+import { NavLink } from "react-router"
 import type { Recipe } from "../../interface/Recipe"
 import styles from "./navbar.module.css"
 
