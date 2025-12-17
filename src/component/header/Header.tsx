@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import styles from "./header.module.css"
+import UserContext from "../../context/userContext"
 
 export default function Header() {
-  const [token, setToken] = useState("")
-  const [message, setMessage] = useState("")
+  const { pseudo, setToken, setPseudo } = useContext(UserContext);
   const [errorMessage, setErrorMessage] = useState("")
 
   async function handleAction(formData: FormData) {
@@ -24,7 +24,7 @@ export default function Header() {
       const data = await response.json()
       console.log(data)
       if (response.ok) {
-        setMessage(`Bienvenue ${data.pseudo}`);
+        setPseudo(`Bienvenue ${data.pseudo}`);
         setToken(data.token);
       } else {
         setErrorMessage("Erreur de connexion")
@@ -36,7 +36,7 @@ export default function Header() {
   }
 
   function handleLogout() {
-    setMessage("");
+    setPseudo("");
     setToken("");
   }
 
@@ -45,9 +45,9 @@ export default function Header() {
       <a href="/">
         <img src="/vite.svg" alt="o'clock recipes" />
       </a>
-      {message ? (
+      {pseudo ? (
         <>        
-          <p>{message}</p>
+          <p>{pseudo}</p>
           <button type="button" onClick={handleLogout}>deconnexion</button>
         </>
       ) : (

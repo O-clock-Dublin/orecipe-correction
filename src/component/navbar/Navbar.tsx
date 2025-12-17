@@ -1,8 +1,12 @@
 import { NavLink } from "react-router"
 import type { Recipe } from "../../interface/Recipe"
 import styles from "./navbar.module.css"
+import { useContext } from "react"
+import UserContext from "../../context/userContext"
 
 export default function Navbar({ recipes }: { recipes: Recipe[] }) {
+  const { token } = useContext(UserContext);
+
   return (
     <nav className={styles.navbar}>
       <ul>
@@ -14,6 +18,16 @@ export default function Navbar({ recipes }: { recipes: Recipe[] }) {
             Accueil
           </NavLink>
         </li>
+        {token && (
+          <li>
+            <NavLink
+              className={({ isActive }) => (isActive ? styles.active : "link")}
+              to="/favorites"
+            >
+              Favoris
+            </NavLink>
+          </li>
+        )}
         {recipes.map((recipe) => (
           <li key={recipe.id}>
             <NavLink

@@ -6,11 +6,15 @@ import Home from "./page/home/Home"
 import { useEffect, useState } from "react"
 import type { Recipe } from "./interface/Recipe"
 import RecipePage from "./page/recipe/RecipePage"
+import UserContext from "./context/userContext"
+import FavoritesPage from "./page/favorites/FavoritesPage"
 
 function App() {
   const apiUrl = "https://orecipes-api-msfv.onrender.com/api"
 
-  const [recipes, setRecipes] = useState<Recipe[]>([])
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [pseudo, setPseudo] = useState("");
+  const [token, setToken] = useState("");
 
   async function fetchRecipes() {
     const response = await fetch(`${apiUrl}/recipes`)
@@ -25,18 +29,30 @@ function App() {
   }, [])
 
   return (
-    <main>
-      <div className="navigation-display">
-        <Navbar recipes={recipes} />
-        <div className="content-size">
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home recipes={recipes} />} />
-            <Route path="/recipes/:slug" element={<RecipePage />} />
-          </Routes>
+    <UserContext
+      value={{
+        token: token,
+        pseudo: pseudo,
+        setToken: setToken,
+        setPseudo: setPseudo,
+      }}
+    >
+      <main>
+        <div className="navigation-display">
+          <Navbar recipes={recipes} />
+          <div className="content-size">
+            <Header />
+            <Routes>
+              <Route path="/" element={<Home recipes={recipes} />} />
+              <Route path="/recipes/:slug" element={<RecipePage />} />
+              {token && (
+                <Route path="/favorites" element={<FavoritesPage />} />
+              )}
+            </Routes>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </UserContext>
   )
 }
 
