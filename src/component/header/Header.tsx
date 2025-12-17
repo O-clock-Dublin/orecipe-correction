@@ -2,6 +2,7 @@ import { useState } from "react"
 import styles from "./header.module.css"
 
 export default function Header() {
+  const [token, setToken] = useState("")
   const [message, setMessage] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
 
@@ -23,7 +24,8 @@ export default function Header() {
       const data = await response.json()
       console.log(data)
       if (response.ok) {
-        setMessage(`Bienvenue ${data.pseudo}`)
+        setMessage(`Bienvenue ${data.pseudo}`);
+        setToken(data.token);
       } else {
         setErrorMessage("Erreur de connexion")
       }
@@ -33,13 +35,21 @@ export default function Header() {
     }
   }
 
+  function handleLogout() {
+    setMessage("");
+    setToken("");
+  }
+
   return (
     <header className={styles.header}>
       <a href="/">
         <img src="/vite.svg" alt="o'clock recipes" />
       </a>
       {message ? (
-        <p>{message}</p>
+        <>        
+          <p>{message}</p>
+          <button type="button" onClick={handleLogout}>deconnexion</button>
+        </>
       ) : (
         <>
           <form action={handleAction} className={styles.form}>
