@@ -1,0 +1,18 @@
+.home {
+  flex: 1;
+  padding: 3rem 2rem;
+  h1 {
+    font-size: 24px;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px solid #209cee;
+    color: #209cee;
+    font-weight: 500;
+    padding-bottom: 5px;
+  }
+  h2 {
+    text-align: left;
+    font-weight: 400;
+    font-size: 16px;
+  }
+}

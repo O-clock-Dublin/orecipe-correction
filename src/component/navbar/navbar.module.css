@@ -1,0 +1,22 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: clamp(250px, 25%, 400px);
+  height: 100dvh;
+  background-color: #042031;
+  padding: 2rem;
+  ul {
+    list-style-type: none;
+    li {
+      text-align: left;
+      a {
+        color: white;
+        font-weight: 400;
+      }
+    }
+    li:not(li:last-of-type) {
+      margin-bottom: 1rem;
+    }
+  }
+}
