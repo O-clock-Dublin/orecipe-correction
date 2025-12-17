@@ -1,35 +1,37 @@
 import { useContext, useEffect, useState } from "react"
 import type { Recipe } from "../../interface/Recipe"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import UserContext from "../../context/userContext"
 
 export default function FavoritesPage() {
   const [favorites, setFavorites] = useState<Recipe[]>([])
+  const navigate = useNavigate()
 
   // ICI Je peux récupérer la boite username depuis mon carton de contexte
   // Avec le hook useContexte, j'appelle UserContexte
-  const { username } = useContext(UserContext)
-
-  async function fetchFavorites() {
-    const token = localStorage.getItem("token")
-    const response = await fetch(
-      "https://orecipes-api-msfv.onrender.com/api/favorites",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-    const result = await response.json()
-    setFavorites(result.favorites)
-  }
+  const { username, token } = useContext(UserContext)
 
   useEffect(() => {
-    ;(async () => {
-      await fetchFavorites()
-    })()
-  }, [])
+    if (token) {
+      ;(async () => {
+        const response = await fetch(
+          "https://orecipes-api-msfv.onrender.com/api/favorites",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        if (response.status === 200) {
+          const result = await response.json()
+          setFavorites(result.favorites)
+        } else if (response.status === 401) {
+          navigate("/")
+        }
+      })()
+    }
+  }, [token, navigate])
 
   return (
     <div>

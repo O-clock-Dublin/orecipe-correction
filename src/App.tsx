@@ -48,7 +48,12 @@ function App() {
             <Header />
             <Routes>
               <Route path="/" element={<Home recipes={recipes} />} />
-              <Route path="/favorites" element={<FavoritesPage />} />
+              <Route
+                path="/favorites"
+                element={
+                  token ? <FavoritesPage /> : <Home recipes={recipes} />
+                }
+              />
               <Route path="/recipes/:slug" element={<RecipePage />} />
             </Routes>
           </div>
