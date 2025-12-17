@@ -6,7 +6,6 @@ import Home from "./page/home/Home";
 import { useEffect, useState } from "react";
 import type { Recipe } from "./interface/Recipe";
 import RecipePage from "./page/recipe/RecipePage";
-import FavoritesPage from "./page/favorites/FavoritesPage";
 
 function App() {
   const apiUrl = "https://orecipes-api-msfv.onrender.com/api";
@@ -26,9 +25,6 @@ function App() {
   }, []);
 
   return (
-    // J'englobe toute l'application dans mon contexte
-    //Afin de pouvoir me servir dans le carton absolument OU JE VEUX
-    // Par la même occasion je mets dans les boites les données issues des states préparées afin qu'elles soient mises à jour
     <main>
       <div className="navigation-display">
         <Navbar recipes={recipes} />
@@ -36,7 +32,6 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home recipes={recipes} />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="/recipes/:slug" element={<RecipePage />} />
           </Routes>
         </div>
