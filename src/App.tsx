@@ -8,6 +8,7 @@ import type { Recipe } from "./interface/Recipe"
 import RecipePage from "./page/recipe/RecipePage"
 import FavoritesPage from "./page/favorites/FavoritesPage"
 import UserContext from "./context/userContext"
+import LoginForm from "./component/login/LoginForm"
 
 function App() {
   const apiUrl = "https://orecipes-api-msfv.onrender.com/api"
@@ -46,6 +47,7 @@ function App() {
           <Navbar recipes={recipes} />
           <div className="content-size">
             <Header />
+            <LoginForm />
             <Routes>
               <Route path="/" element={<Home recipes={recipes} />} />
               <Route path="/favorites" element={<FavoritesPage />} />
