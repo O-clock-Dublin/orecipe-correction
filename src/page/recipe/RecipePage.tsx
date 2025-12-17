@@ -8,18 +8,14 @@ export default function RecipePage() {
 
   const [recipe, setRecipe] = useState<Recipe | undefined>()
 
-  async function fetchRecipe() {
-    const response = await fetch(`${apiUrl}/recipes/${slug}`)
-    const fetchedRecipe: Recipe = await response.json()
-    setRecipe(fetchedRecipe)
-    console.log(fetchedRecipe)
-  }
-
   useEffect(() => {
     ;(async () => {
-      await fetchRecipe()
+      const response = await fetch(`${apiUrl}/recipes/${slug}`)
+      const fetchedRecipe: Recipe = await response.json()
+      setRecipe(fetchedRecipe)
+      console.log(fetchedRecipe)
     })()
-  }, [])
+  }, [slug, apiUrl])
 
   return (
     <article>

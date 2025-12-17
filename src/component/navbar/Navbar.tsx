@@ -14,6 +14,14 @@ export default function Navbar({ recipes }: { recipes: Recipe[] }) {
             Accueil
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            className={({ isActive }) => (isActive ? styles.active : "link")}
+            to="/favorites"
+          >
+            Favoris
+          </NavLink>
+        </li>
         {recipes.map((recipe) => (
           <li key={recipe.id}>
             <NavLink
