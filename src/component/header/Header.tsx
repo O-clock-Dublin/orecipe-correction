@@ -2,35 +2,52 @@ import { useState } from "react"
 import styles from "./header.module.css"
 
 export default function Header() {
-  const [message, setMessage] = useState("")
+  
+  // const [message, setMessage] = useState("")
+  const [token, setToken] = useState(null)  // Etat pour l'authentification
+  const [pseudo, setPseudo] = useState("") 
   const [errorMessage, setErrorMessage] = useState("")
 
-  async function handleAction(formData: FormData) {
-    const email = String(formData.get("email")).trim()
+// Recuoeration des données de l'api
+  async function handleAction(formData: FormData) { // Récupération des données du formaulaire
+    const email = String(formData.get("email")).trim() 
     const password = String(formData.get("password")).trim()
 
+// Reset des messages d'erreur
+    setErrorMessage("")
+
+
     try {
-      const response = await fetch(
-        "https://orecipes-api-msfv.onrender.com/api/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
+        const response = await fetch(
+          "https://orecipes-api-msfv.onrender.com/api/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          }
+        )
+    
+        const data = await response.json()
+    
+        if (response.status === 200) {
+          setToken(data.token)
+          setPseudo(data.pseudo)
         }
-      )
-      const data = await response.json()
-      console.log(data)
-      if (response.ok) {
-        setMessage(`Bienvenue ${data.pseudo}`)
-      } else {
-        setErrorMessage("Erreur de connexion")
+    
+        if (response.status === 401) {
+          setErrorMessage("Email ou mot de passe incorrect")
+        }
+      } catch (error) {
+        console.error(error)
+        setErrorMessage("Erreur serveur")
       }
-    } catch (error) {
-      console.error("Erreur lors de la requête:", error)
-      setErrorMessage("Erreur de connexion")
     }
+
+function handleLogout() {
+    setToken(null)
+    setPseudo("")
   }
 
   return (
@@ -38,9 +55,12 @@ export default function Header() {
       <a href="/">
         <img src="/vite.svg" alt="o'clock recipes" />
       </a>
-      {message ? (
-        <p>{message}</p>
-      ) : (
+      {token ? (
+          <div>
+            <p>Bienvenue {pseudo}</p>
+            <button onClick={handleLogout}>Déconnexion</button>
+          </div>
+        ) : (
         <>
           <form action={handleAction} className={styles.form}>
             <input
