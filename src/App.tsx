@@ -7,6 +7,8 @@ import { useEffect, useState } from "react"
 import type { Recipe } from "./interface/Recipe"
 import RecipePage from "./page/recipe/RecipePage"
 import FavoritesPage from "./page/favorites/FavoritesPage"
+import LoginPage from "./page/login/LoginPage"
+import ProtectedRoute from "./component/ProtectedRoute"
 import UserContext from "./context/userContext"
 
 function App() {
@@ -16,6 +18,7 @@ function App() {
   // Je prépare des states qui viendront dans les boites de mon carton (mon contexte)
   const [token, setToken] = useState<null | string>(null)
   const [username, setUsername] = useState<null | string>(null)
+  const [errorMessage, setErrorMessage] = useState<string>("")
 
   async function fetchRecipes() {
     const response = await fetch(`${apiUrl}/recipes`)
@@ -37,8 +40,10 @@ function App() {
       value={{
         token: token,
         username: username,
+        errorMessage: errorMessage,
         setToken: setToken,
         setUsername: setUsername,
+        setErrorMessage: setErrorMessage,
       }}
     >
       <main>
@@ -48,7 +53,15 @@ function App() {
             <Header />
             <Routes>
               <Route path="/" element={<Home recipes={recipes} />} />
-              <Route path="/favorites" element={<FavoritesPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route 
+                path="/favorites" 
+                element={
+                  <ProtectedRoute>
+                    <FavoritesPage />
+                  </ProtectedRoute>
+                } 
+              />
               <Route path="/recipes/:slug" element={<RecipePage />} />
             </Routes>
           </div>

@@ -6,15 +6,19 @@ import { createContext } from "react"
 interface UserContextType {
   token: null | string
   username: null | string
+  errorMessage: string
   setToken: (token: string | null) => void
   setUsername: (username: string | null) => void
+  setErrorMessage: (message: string) => void
 }
 
-//Je crée le carton avec deux boites vides dedans token et username
+//Je crée le carton avec les boites vides dedans
 const UserContext = createContext<UserContextType>({
   token: null,
   username: null,
+  errorMessage: '',
   setToken: () => {},
   setUsername: () => {},
+  setErrorMessage: () => {},
 })
 export default UserContext
