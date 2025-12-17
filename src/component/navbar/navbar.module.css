@@ -13,6 +13,9 @@
       a {
         color: white;
         font-weight: 400;
+        &.active {
+          color: #209cee;
+        }
       }
     }
     li:not(li:last-of-type) {

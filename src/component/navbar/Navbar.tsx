@@ -1,4 +1,4 @@
-import { Link, Links } from "react-router"
+import { Link, NavLink } from "react-router"
 import type { Recipe } from "../../interface/Recipe"
 import styles from "./navbar.module.css"
 
@@ -7,11 +7,21 @@ export default function Navbar({ recipes }: { recipes: Recipe[] }) {
     <nav className={styles.navbar}>
       <ul>
         <li>
-          <Link to="/">Accueil</Link>
+          <NavLink
+            className={({ isActive }) => (isActive ? styles.active : "link")}
+            to="/"
+          >
+            Accueil
+          </NavLink>
         </li>
         {recipes.map((recipe) => (
           <li key={recipe.id}>
-            <Link to={`/${recipe.slug}`}>{recipe.title}</Link>
+            <NavLink
+              className={({ isActive }) => (isActive ? styles.active : "link")}
+              to={`/${recipe.slug}`}
+            >
+              {recipe.title}
+            </NavLink>
           </li>
         ))}
       </ul>
