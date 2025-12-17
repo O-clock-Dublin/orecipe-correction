@@ -3,11 +3,10 @@ import styles from "./header.module.css"
 import UserContext from "../../context/userContext"
 
 export default function Header() {
-  const [message, setMessage] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
 
   //Je récupère les boites qui m'interressent dans mon carton UserContexte
-  const { setToken, setUsername } = useContext(UserContext)
+  const { token, username, setToken, setUsername } = useContext(UserContext)
 
   async function handleAction(formData: FormData) {
     const email = String(formData.get("email")).trim()
@@ -25,8 +24,7 @@ export default function Header() {
         }
       )
       const data = await response.json()
-      if (response.ok) {
-        setMessage(`Bienvenue ${data.pseudo}`)
+      if (response.status === 200) {
         localStorage.setItem("token", data.token)
         //Je met à jour la boite token du contexte, ce qui modifie le state dans app
         // Et met donc à jour le token sur toute l'application !
@@ -34,6 +32,9 @@ export default function Header() {
         localStorage.setItem("user", data.pseudo)
         // Pareil pour le pseudo !
         setUsername(data.pseudo)
+        setErrorMessage("")
+      } else if (response.status === 401) {
+        setErrorMessage("Erreur de connexion : identifiants incorrects")
       } else {
         setErrorMessage("Erreur de connexion")
       }
@@ -48,21 +49,32 @@ export default function Header() {
     // Et le secret en .env (attention uniquement coté server ! Donc pas avec des applis react seules)
 
     //une fois que tout est valide je recupère le pseudo via soit le token / soit le localstorage / soit les cookies
-    const pseudo: string | null = localStorage.getItem("user")
-    ;(async () => {
-      if (pseudo) {
-        setMessage(`Bienvenue ${pseudo}`)
-      }
-    })()
-  }, [])
+    const storedToken: string | null = localStorage.getItem("token")
+    const storedPseudo: string | null = localStorage.getItem("user")
+    if (storedToken && storedPseudo) {
+      setToken(storedToken)
+      setUsername(storedPseudo)
+    }
+  }, [setToken, setUsername])
+
+  function handleLogout() {
+    setToken(null)
+    setUsername(null)
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+    setErrorMessage("")
+  }
 
   return (
     <header className={styles.header}>
       <a href="/">
         <img src="/vite.svg" alt="o'clock recipes" />
       </a>
-      {message ? (
-        <p>{message}</p>
+      {token && username ? (
+        <div>
+          <p>Bienvenue {username}</p>
+          <button onClick={handleLogout}>Déconnexion</button>
+        </div>
       ) : (
         <>
           <form action={handleAction} className={styles.form}>
