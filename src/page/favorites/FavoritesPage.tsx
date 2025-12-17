@@ -1,43 +1,27 @@
-import { useContext, useEffect, useState } from "react"
-import type { Recipe } from "../../interface/Recipe"
-import { Link } from "react-router"
-import UserContext from "../../context/userContext"
+import { useEffect, useState } from "react";
+import type { Recipe } from "../../interface/Recipe";
+import { Link } from "react-router";
 
 export default function FavoritesPage() {
-  const [favorites, setFavorites] = useState<Recipe[]>([])
-
-  // ICI Je peux récupérer la boite username depuis mon carton de contexte
-  // Avec le hook useContexte, j'appelle UserContexte
-  const { username } = useContext(UserContext)
+  const [favorites, setFavorites] = useState<Recipe[]>([]);
 
   async function fetchFavorites() {
-    const token = localStorage.getItem("token")
     const response = await fetch(
-      "https://orecipes-api-msfv.onrender.com/api/favorites",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-    const result = await response.json()
-    setFavorites(result.favorites)
+      "https://orecipes-api-msfv.onrender.com/api/favorites"
+    );
+    const result = await response.json();
+    setFavorites(result.favorites);
   }
 
   useEffect(() => {
-    ;(async () => {
-      await fetchFavorites()
-    })()
-  }, [])
+    (async () => {
+      await fetchFavorites();
+    })();
+  }, []);
 
   return (
     <div>
-      {/* 
-        J'affiche les données à jour de username
-        Sans avoir besoin de props drilling
-        */}
-      <h1>Bonjour {username} : voici tes recettes favorites : </h1>
+      <h1>Recettes favorites</h1>
       <ul>
         {favorites.length > 0 ? (
           favorites.map((favorite) => (
@@ -53,5 +37,5 @@ export default function FavoritesPage() {
         )}
       </ul>
     </div>
-  )
+  );
 }
