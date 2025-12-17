@@ -29,8 +29,6 @@ function App() {
     })()
   }, [])
 
-  console.log(token, username)
-
   return (
     // J'englobe toute l'application dans mon contexte
     //Afin de pouvoir me servir dans le carton absolument OU JE VEUX

@@ -13,7 +13,6 @@ export default function RecipePage() {
       const response = await fetch(`${apiUrl}/recipes/${slug}`)
       const fetchedRecipe: Recipe = await response.json()
       setRecipe(fetchedRecipe)
-      console.log(fetchedRecipe)
     })()
   }, [slug, apiUrl])
 

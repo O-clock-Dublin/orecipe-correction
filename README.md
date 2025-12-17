@@ -1,73 +1,25 @@
-# React + TypeScript + Vite
+# Challenge Authentication
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. Formulaire de connexion
 
-Currently, two official plugins are available:
+- Créé un state pour stocker le token d'authentification, un pour stocker le pseudo et un autre pour les éventuels messages d'erreur.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- A la validation du formulaire de connexion, envoie une requête POST à l'URL `/login` avec les données du formulaire:
 
-## React Compiler
+  - Si tu reçois un code de statut HTTP 200, enregistre le token et le pseudo dans un state
+  - Si tu reçois un code de statut HTTP 401, enregistre un message d'erreur dans un state
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Utilise ces états pour afficher le pseudo de l'utilisateur connecté (+ un bouton de déconnexion) ou le message d'erreur si nécessaire.
 
-## Expanding the ESLint configuration
+- Au click sur le bouton de déconnexion, supprime le token et le pseudo du state.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 2. Authentification des requêtes
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Créé une route `/favorites` mais conditionne son rendu à la présence du token d'authentification dans le state.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Créé un nouveau lien dans le menu de navigation qui pointe vers cette route `/favorites`. Ce lien ne doit être visible que si l'utilisateur est connecté (c'est-à-dire si le token d'authentification est présent dans le state).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Cette route affiche un nouveau composant `Favorites` qui affiche la liste des favoris de l'utilisateur connecté.
+- Dans le composant `Favorites`, envoie une requête GET à l'URL `/favorites` avec le token d'authentification dans les headers:
+  - Si tu reçois un code de statut HTTP 200, affiche la liste des favoris
+  - Si tu reçois un code de statut HTTP 401, redirige l'utilisateur vers la page de connexion
